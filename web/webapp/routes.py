@@ -2,6 +2,9 @@ from flask import url_for, render_template, request, redirect, session
 from flask import current_app as app
 from .models import db, User
 
+@app.context_processor
+def inject_hostname():
+    return dict(hostname=socket.gethostname())
 
 @app.route('/', methods=['GET'])
 def home():
