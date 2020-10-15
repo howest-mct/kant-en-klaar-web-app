@@ -25,10 +25,6 @@ jobs:
       with:
         app-name: 'eslih2'
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        images: 'eslih.azurecr.io/nginx:${{ github.sha }}'
-
-    - uses: azure/webapps-deploy@v2
-      with:
-        app-name: 'eslih2'
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        images: 'eslih.azurecr.io/webapp:${{ github.sha }}'
+        images: |
+          eslih.azurecr.io/nginx:${{ github.sha }}
+          eslih.azurecr.io/webapp:${{ github.sha }}
