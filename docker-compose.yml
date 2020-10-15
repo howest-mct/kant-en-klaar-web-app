@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   web:
+    image: eslih.azurecr.io/webapp:latest
     build: ./web
     expose:
       - 5000
@@ -17,8 +18,10 @@ services:
       - POSTGRES_USER=student_user
       - POSTGRES_DB=labo
   nginx:
+    image: eslih.azurecr.io/nginx:latest
     build: ./nginx
     ports:
       - 80:80
     depends_on:
       - web
+
