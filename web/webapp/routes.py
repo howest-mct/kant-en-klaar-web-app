@@ -50,3 +50,8 @@ def register():
 def logout():
     session['logged_in'] = False
     return redirect(url_for('home'))
+
+@app.before_request
+def before_request():
+    g.request_start_time = time.time()
+    g.request_time = lambda: "%.5fs" % (time.time() - g.request_start_time)
