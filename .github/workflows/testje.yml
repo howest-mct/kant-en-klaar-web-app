@@ -21,9 +21,9 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - run: |
-        docker build . -t eslih.azurecr.io/nginx:${{ github.sha }}
+        docker build nginx/ -t eslih.azurecr.io/nginx:${{ github.sha }}
         docker push eslih.azurecr.io/nginx:${{ github.sha }}      
-        docker build . -t eslih.azurecr.io/webapp:${{ github.sha }}
+        docker build web/ -t eslih.azurecr.io/webapp:${{ github.sha }}
         docker push eslih.azurecr.io/webapp:${{ github.sha }}      
       
     - uses: azure/webapps-deploy@v2
