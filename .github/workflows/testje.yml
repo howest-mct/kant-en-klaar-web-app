@@ -1,30 +1,38 @@
-name: TestFlow
-
 on: [push]
 
+name: Linux_Container_Node_Workflow
+
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-
+    # checkout the repo
+    - name: 'Checkout GitHub Action' 
+      uses: actions/checkout@master
+    
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
     - uses: azure/docker-login@v1
       with:
         login-server: eslih.azurecr.io
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
-
     - run: |
-        docker build web/ -t eslih.azurecr.io/webapp:${{ github.sha }}
-        docker build nginx/ -t eslih.azurecr.io/nginx:${{ github.sha }}
-        docker push eslih.azurecr.io/webapp:${{ github.sha }}
-        docker push eslih.azurecr.io/nginx:${{ github.sha }}          
-
+        docker build . -t eslih.azurecr.io/nginx:${{ github.sha }}
+        docker push eslih.azurecr.io/nginx:${{ github.sha }}      
+        docker build . -t eslih.azurecr.io/webapp:${{ github.sha }}
+        docker push eslih.azurecr.io/webapp:${{ github.sha }}      
+      
     - uses: azure/webapps-deploy@v2
       with:
         app-name: 'eslih2'
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         images: |
-          eslih.azurecr.io/nginx:${{ github.sha }}
-          eslih.azurecr.io/webapp:${{ github.sha }}
+          'eslih.azurecr.io/nginx:${{ github.sha }}'
+          'eslih.azurecr.io/webapp:${{ github.sha }}'
+    
+    - name: Azure logout
+      run: |
+        az logout
