@@ -28,7 +28,7 @@ jobs:
       
     - uses: azure/webapps-deploy@v2
       with:
-        app-name: 'eslih2'
+        app-name: 'eslih3'
         images: |
           'eslih.azurecr.io/nginx:${{ github.sha }}'
           'eslih.azurecr.io/webapp:${{ github.sha }}'
